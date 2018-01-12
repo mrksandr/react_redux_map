@@ -35,11 +35,13 @@
   },
   "dependencies": {
     "axios": "^0.17.0",
+    "babel-eslint": "^8.2.1",
     "babel-runtime": "^6.3.19",
     "body-parser": "1.15.0",
     "express": "~4.13.4",
     "extract-text-webpack-plugin": "^1.0.1",
     "history": "^4.7.2",
+    "mongoose": "^4.13.9",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-bootstrap": "^0.31.3",

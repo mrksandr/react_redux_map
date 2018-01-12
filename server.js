@@ -3,6 +3,14 @@ var express = require('express'),
   http = require('http'),
   path = require('path');
 
+var mongoose = require('mongoose');
+const { Schema } = mongoose;
+
+const addressSchema = new Schema({
+  email: String,
+  responded: { type: Boolean, default: false },
+});
+
 var app = (module.exports = express());
 
 app.set('port', process.env.PORT || 8000);
