@@ -5,6 +5,7 @@ import { Grid, Row, Col } from 'react-bootstrap';
 
 import SearchForm from '../containers/SearchForm';
 import AddressList from '../containers/AddressList';
+import Map from '../components/Map';
 
 import '../main.css';
 
@@ -20,7 +21,12 @@ function Root() {
             <AddressList />
           </Col>
           <Col xs={12} md={8}>
-            map
+            <Map
+              googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
+              loadingElement={<div style={{ height: `100%` }} />}
+              containerElement={<div style={{ height: `400px` }} />}
+              mapElement={<div style={{ height: `100%` }} />}
+            />
           </Col>
         </Row>
       </Grid>

@@ -1,2 +1,3 @@
 export const FETCH_ADDRESS = 'FETCH_ADDRESS';
 export const DELETE_ADDRESS = 'DELETE_ADDRESS';
+export const SELECT_ADDRESS = 'SELECT_ADDRESS';

@@ -5,39 +5,28 @@ import { mapToArr } from '../helpers';
 import AddressItem from '../components/AddressItem';
 // import GoogleMap from '../components/googleMap';
 
-import { deleteAdress } from '../AC';
+import { deleteAdress, selectAdress } from '../AC';
 
-const initialState = {};
+const AddressList = props => {
+  const { adresses, deleteAdress, selectAdress } = props;
 
-class AddressList extends React.Component {
-  state = initialState;
+  if (!adresses || adresses.length === 0) return <h4>No items</h4>;
 
-  handleDelete = () => {
-    if (!id) return null;
-    this.props.deleteAdress(id);
-    this.setState(initialState);
-  };
+  const addressItems = adresses.map(adress => (
+    <AddressItem
+      key={adress.id}
+      cityInfo={adress}
+      handleDelete={deleteAdress}
+      handleSelect={selectAdress}
+    />
+  ));
 
-  render() {
-    const adresses = this.props.adresses;
-
-    if (!adresses || adresses.length === 0) return <h4>No items</h4>;
-
-    const addressItems = adresses.map(adress => (
-      <AddressItem
-        key={adress.id}
-        cityinfo={adress}
-        handleDelete={this.props.deleteAdress}
-      />
-    ));
-
-    return <ul>{addressItems}</ul>;
-  }
-}
+  return <ul className="list-group">{addressItems}</ul>;
+};
 
 export default connect(
-  ({ address }) => ({
-    adresses: mapToArr(address),
+  ({ address: { items } }) => ({
+    adresses: mapToArr(items),
   }),
-  { deleteAdress },
+  { deleteAdress, selectAdress },
 )(AddressList);

@@ -1,23 +1,42 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
+import { Button, Glyphicon, NavItem, Col, Row } from 'react-bootstrap';
 
 class AddressItem extends Component {
   deleteItem = () => {
-    const { handleDelete, cityinfo } = this.props;
-    handleDelete(cityinfo.id);
+    const { handleDelete, cityInfo } = this.props;
+    console.log('deleteItem');
+    handleDelete(cityInfo.id);
+  };
+
+  selectItem = () => {
+    const { handleSelect, cityInfo } = this.props;
+    console.log('selectItem');
+    handleSelect(cityInfo.id);
   };
 
   render() {
-    const { id, address, location } = this.props.cityinfo;
-    const { lat, lng } = location;
+    const { id, address, location } = this.props.cityInfo;
+    //const { lat, lng } = location;
 
     return (
-      <li key={id}>
-        <div>{address}</div>
-        <Button onClick={this.deleteItem} bsSize="small" bsStyle="info">
-          Delete
-        </Button>
+      <li className="list-group-item" key={id}>
+        <Row>
+          <Col xs={12}>
+            <Button
+              bsStyle="link"
+              className="no-wrap"
+              onClick={this.selectItem}
+            >
+              {address}
+            </Button>
+            <span
+              onClick={this.deleteItem}
+              className="glyphicon glyphicon-remove delete-address"
+              aria-hidden="true"
+            />
+          </Col>
+        </Row>
       </li>
     );
   }

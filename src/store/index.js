@@ -6,4 +6,6 @@ const enhancer = applyMiddleware(thunk);
 
 const store = createStore(reducer, {}, enhancer);
 
+window.store = store;
+
 export default store;
