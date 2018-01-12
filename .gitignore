@@ -1,0 +1,5 @@
+node_modules/
+.idea/
+__MACOSX/
+invoices.sqlite
+npm-debug.log
