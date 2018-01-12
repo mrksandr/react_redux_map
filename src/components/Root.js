@@ -3,8 +3,8 @@ import store from '../store';
 import { Provider } from 'react-redux';
 import { Grid, Row, Col } from 'react-bootstrap';
 
-import SearchForm from '../containers/SearchForm';
-import AddressList from '../containers/AddressList';
+import SearchForm from './SearchForm';
+import AddressList from './AddressList';
 import Map from '../components/Map';
 
 import '../main.css';
