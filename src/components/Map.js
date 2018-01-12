@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import {
   withScriptjs,
@@ -49,3 +50,13 @@ export default withScriptjs(
     })(Map),
   ),
 );
+
+Map.propTypes = {
+  // from connect
+  selectedAddress: PropTypes.object,
+  // from props
+  googleMapURL: PropTypes.string,
+  loadingElement: PropTypes.element,
+  containerElement: PropTypes.element,
+  mapElement: PropTypes.element,
+};

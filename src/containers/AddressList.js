@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import { mapToArr } from '../helpers';
 import AddressItem from '../components/AddressItem';
-// import GoogleMap from '../components/googleMap';
 
 import { deleteAdress, selectAdress } from '../AC';
 
@@ -30,3 +30,10 @@ export default connect(
   }),
   { deleteAdress, selectAdress },
 )(AddressList);
+
+Map.propTypes = {
+  // from connect
+  adresses: PropTypes.object,
+  deleteAdress: PropTypes.func,
+  selectAdress: PropTypes.func,
+};

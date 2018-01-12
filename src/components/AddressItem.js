@@ -1,23 +1,20 @@
 import React, { Component } from 'react';
-import propTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { Button, Glyphicon, NavItem, Col, Row } from 'react-bootstrap';
 
 class AddressItem extends Component {
   deleteItem = () => {
     const { handleDelete, cityInfo } = this.props;
-    console.log('deleteItem');
     handleDelete(cityInfo.id);
   };
 
   selectItem = () => {
     const { handleSelect, cityInfo } = this.props;
-    console.log('selectItem');
     handleSelect(cityInfo.id);
   };
 
   render() {
     const { id, address, location } = this.props.cityInfo;
-    //const { lat, lng } = location;
 
     return (
       <li className="list-group-item" key={id}>
@@ -42,6 +39,11 @@ class AddressItem extends Component {
   }
 }
 
-AddressItem.propTypes = {};
+AddressItem.propTypes = {
+  // from props
+  cityInfo: PropTypes.object,
+  handleDelete: PropTypes.func,
+  handleSelect: PropTypes.func,
+};
 
 export default AddressItem;

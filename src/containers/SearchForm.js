@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FormControl, Button } from 'react-bootstrap';
+import PropTypes from 'prop-types';
+
 import { fetchAddress } from '../AC/index';
 
 const initialState = {
@@ -46,3 +48,8 @@ class SearchForm extends React.Component {
 }
 
 export default connect(null, { fetchAddress })(SearchForm);
+
+SearchForm.propTypes = {
+  // from connect
+  fetchAddress: PropTypes.func,
+};
