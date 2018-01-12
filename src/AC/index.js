@@ -1,13 +1,13 @@
 import axios from 'axios';
 
-import { FETCH_ADDRESS } from '../constants';
+import { FETCH_ADDRESS, DELETE_ADDRESS } from '../constants';
 
 const API_KEY = 'AIzaSyDRAMchG_UXTJVra9_cc1U0RZKPMc3vtM8';
 const URL = 'https://maps.googleapis.com/maps/api/geocode/json';
 
 export const fetchAddress = location => dispatch =>
   axios
-    .get('https://maps.googleapis.com/maps/api/geocode/json', {
+    .get(URL, {
       params: {
         address: location,
         key: API_KEY,
@@ -35,3 +35,24 @@ export function fetchedAddress(data) {
     },
   };
 }
+
+export const deleteAdress = id => dispatch => {
+  dispatch(adressDeleted(id));
+};
+
+export function adressDeleted(id) {
+  return {
+    type: DELETE_ADDRESS,
+    payload: { id },
+  };
+}
+
+const handleResponse = response => {
+  if (response.ok) {
+    return response.json();
+  } else {
+    let error = new Error(response.statusText);
+    error.response = response;
+    throw error;
+  }
+};

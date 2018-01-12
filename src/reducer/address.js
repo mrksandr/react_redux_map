@@ -1,4 +1,4 @@
-import { FETCH_ADDRESS } from '../constants';
+import { FETCH_ADDRESS, DELETE_ADDRESS } from '../constants';
 
 export default (state = {}, { type, payload }) => {
   switch (type) {
@@ -7,6 +7,10 @@ export default (state = {}, { type, payload }) => {
         ...state,
         [payload.id]: payload,
       };
+    case DELETE_ADDRESS:
+      const tmpState = { ...state };
+      delete tmpState[payload.id];
+      return tmpState;
 
     default:
       return state;

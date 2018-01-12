@@ -3,31 +3,33 @@ import { connect } from 'react-redux';
 import { FormControl, Button } from 'react-bootstrap';
 import { fetchAddress } from '../AC/index';
 
+const initialState = {
+  search: '',
+};
+
 class SearchForm extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      search: '',
-    };
+    this.state = initialState;
   }
 
   onInputChange = ev => {
     this.setState({
       search: ev.target.value,
     });
-    console.log(ev.target.value);
   };
 
   onFormSubmit = ev => {
     ev.preventDefault();
 
     this.props.fetchAddress(this.state.search);
+    this.setState(initialState);
   };
 
   render() {
     return (
-      <form onSubmit={this.onFormSubmit} className="input-group">
+      <form onSubmit={this.onFormSubmit} className="input-group search-block">
         <FormControl
           type="text"
           value={this.state.search}
