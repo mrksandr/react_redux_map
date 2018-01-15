@@ -1,8 +1,18 @@
-import { FETCH_ADDRESS, DELETE_ADDRESS, SELECT_ADDRESS } from '../constants';
+import {
+  FETCH_ADDRESS,
+  DELETE_ADDRESS,
+  SELECT_ADDRESS,
+  LOAD_ALL_ADDRESS,
+  START,
+  SUCCESS,
+} from '../constants';
+
+import { arrToMap } from '../helpers';
 
 const initialState = {
   items: {},
   selectedAddress: null,
+  loading: false,
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -24,6 +34,24 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         selectedAddress: payload.id,
+      };
+
+    case LOAD_ALL_ADDRESS + START:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case LOAD_ALL_ADDRESS + SUCCESS:
+      const loadAdresses = arrToMap(payload.addresses);
+
+      return {
+        ...state,
+        items: {
+          ...state.items,
+          ...loadAdresses,
+        },
+        loading: false,
       };
 
     default:

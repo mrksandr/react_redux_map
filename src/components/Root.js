@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
-import store from '../store';
+import React from 'react';
 import { Provider } from 'react-redux';
 import { Grid, Row, Col } from 'react-bootstrap';
 
+import store from '../store';
+
 import SearchForm from './SearchForm';
 import AddressList from './AddressList';
-import Map from '../components/Map';
+import Map from './Map';
 
 import '../main.css';
 

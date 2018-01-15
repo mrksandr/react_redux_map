@@ -5,30 +5,39 @@ import PropTypes from 'prop-types';
 import { mapToArr } from '../helpers';
 import AddressItem from '../components/AddressItem';
 
-import { deleteAdress, selectAdress } from '../AC';
+import { deleteAdress, selectAdress, loadAllAddresses } from '../AC';
 
-const AddressList = props => {
-  const { adresses, deleteAdress, selectAdress } = props;
+class AddressList extends React.Component {
+  componentDidMount() {
+    this.props.loadAllAddresses();
+  }
 
-  if (!adresses || adresses.length === 0) return <h4>No items</h4>;
+  render() {
+    const { adresses, deleteAdress, selectAdress, loading } = this.props;
 
-  const addressItems = adresses.map(adress => (
-    <AddressItem
-      key={adress.id}
-      cityInfo={adress}
-      handleDelete={deleteAdress}
-      handleSelect={selectAdress}
-    />
-  ));
+    if (loading) return <div>loading...</div>;
 
-  return <ul className="list-group">{addressItems}</ul>;
-};
+    if (!adresses || adresses.length === 0) return <h4>No items</h4>;
+
+    const addressItems = adresses.map(adress => (
+      <AddressItem
+        key={adress.id}
+        cityInfo={adress}
+        handleDelete={deleteAdress}
+        handleSelect={selectAdress}
+      />
+    ));
+
+    return <ul className="list-group">{addressItems}</ul>;
+  }
+}
 
 export default connect(
-  ({ address: { items } }) => ({
+  ({ address: { items, loading } }) => ({
     adresses: mapToArr(items),
+    loading,
   }),
-  { deleteAdress, selectAdress },
+  { deleteAdress, selectAdress, loadAllAddresses },
 )(AddressList);
 
 Map.propTypes = {
@@ -36,4 +45,5 @@ Map.propTypes = {
   adresses: PropTypes.object,
   deleteAdress: PropTypes.func,
   selectAdress: PropTypes.func,
+  loadAllAddresses: PropTypes.func,
 };
