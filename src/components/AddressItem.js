@@ -1,43 +1,37 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Glyphicon, NavItem, Col, Row } from 'react-bootstrap';
+import { Button, Col, Row } from 'react-bootstrap';
 
-class AddressItem extends Component {
-  deleteItem = () => {
-    const { handleDelete, cityInfo } = this.props;
+const AddressItem = props => {
+  const { id, address, location } = props.cityInfo;
+
+  const deleteItem = () => {
+    const { handleDelete, cityInfo } = props;
     handleDelete(cityInfo.id);
   };
 
-  selectItem = () => {
-    const { handleSelect, cityInfo } = this.props;
+  const selectItem = () => {
+    const { handleSelect, cityInfo } = props;
     handleSelect(cityInfo.id);
   };
 
-  render() {
-    const { id, address, location } = this.props.cityInfo;
-
-    return (
-      <li className="list-group-item" key={id}>
-        <Row>
-          <Col xs={12}>
-            <Button
-              bsStyle="link"
-              className="no-wrap"
-              onClick={this.selectItem}
-            >
-              {address}
-            </Button>
-            <span
-              onClick={this.deleteItem}
-              className="glyphicon glyphicon-remove delete-address"
-              aria-hidden="true"
-            />
-          </Col>
-        </Row>
-      </li>
-    );
-  }
-}
+  return (
+    <li className="list-group-item" key={id}>
+      <Row>
+        <Col xs={12}>
+          <Button bsStyle="link" className="no-wrap" onClick={selectItem}>
+            {address}
+          </Button>
+          <span
+            onClick={deleteItem}
+            className="glyphicon glyphicon-remove delete-address"
+            aria-hidden="true"
+          />
+        </Col>
+      </Row>
+    </li>
+  );
+};
 
 AddressItem.propTypes = {
   // from props

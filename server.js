@@ -18,7 +18,10 @@ const { Schema } = mongoose;
 
 const addressSchema = new Schema({
   id: String,
-  address: String,
+  address: {
+    type: String,
+    unique: true,
+  },
   location: {
     lat: { type: Number, required: true },
     lng: { type: Number, required: true },

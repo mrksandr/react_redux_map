@@ -3,8 +3,11 @@ import {
   DELETE_ADDRESS,
   SELECT_ADDRESS,
   LOAD_ALL_ADDRESS,
+  CURRENT_LOCATION,
   START,
   SUCCESS,
+  FAIL,
+  REQUEST,
 } from '../constants';
 
 import { arrToMap } from '../helpers';
@@ -13,9 +16,11 @@ const initialState = {
   items: {},
   selectedAddress: null,
   loading: false,
+  error: null,
 };
 
-export default (state = initialState, { type, payload }) => {
+export default (state = initialState, action) => {
+  const { type, payload, error } = action;
   switch (type) {
     case FETCH_ADDRESS:
       return {
@@ -40,6 +45,7 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         loading: true,
+        error: null,
       };
 
     case LOAD_ALL_ADDRESS + SUCCESS:
@@ -54,6 +60,24 @@ export default (state = initialState, { type, payload }) => {
         loading: false,
       };
 
+    case LOAD_ALL_ADDRESS + FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: error,
+      };
+
+    case CURRENT_LOCATION + START:
+      return {
+        ...state,
+        error: null,
+      };
+
+    case CURRENT_LOCATION + FAIL:
+      return {
+        ...state,
+        error: error,
+      };
     default:
       return state;
   }

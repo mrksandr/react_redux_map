@@ -9,6 +9,8 @@ import {
   withGoogleMap,
 } from 'react-google-maps';
 
+import { selectedLocationSelector } from '../selectors';
+
 const initialState = { lat: -34.397, lng: 150.644 };
 
 class Map extends React.Component {
@@ -31,6 +33,19 @@ class Map extends React.Component {
     nextProps.selectedAddress && this.setState(nextProps.selectedAddress);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextState && this.state) {
+      const { lat, lon } = this.state;
+      const { latNext, lonNext } = nextState;
+
+      if (lat !== latNext || lon !== lonNext) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   render() {
     return (
       <GoogleMap zoom={8} center={{ ...this.state }}>
@@ -42,12 +57,9 @@ class Map extends React.Component {
 
 export default withScriptjs(
   withGoogleMap(
-    connect(({ address: { items, selectedAddress } }) => {
-      return {
-        selectedAddress:
-          items[selectedAddress] && items[selectedAddress].location,
-      };
-    })(Map),
+    connect(state => ({
+      selectedAddress: selectedLocationSelector(state),
+    }))(Map),
   ),
 );
 

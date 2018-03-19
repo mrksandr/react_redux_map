@@ -1,21 +1,32 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
-import { mapToArr } from '../helpers';
 import AddressItem from '../components/AddressItem';
 
-import { deleteAdress, selectAdress, loadAllAddresses } from '../AC';
+import {
+  deleteAdressRequest,
+  selectAdress,
+  loadAllAddressesRequest,
+} from '../AC';
+
+import { addressSelector, loadingSelector, errorSelector } from '../selectors';
 
 class AddressList extends React.Component {
   componentDidMount() {
-    this.props.loadAllAddresses();
+    this.props.loadAllAddressesRequest();
   }
 
   render() {
-    const { adresses, deleteAdress, selectAdress, loading } = this.props;
+    const {
+      adresses,
+      deleteAdressRequest,
+      selectAdress,
+      loading,
+      error,
+    } = this.props;
 
     if (loading) return <div>loading...</div>;
+    if (error && error.load) return <div>{error.load}</div>;
 
     if (!adresses || adresses.length === 0) return <h4>No items</h4>;
 
@@ -23,7 +34,7 @@ class AddressList extends React.Component {
       <AddressItem
         key={adress.id}
         cityInfo={adress}
-        handleDelete={deleteAdress}
+        handleDelete={deleteAdressRequest}
         handleSelect={selectAdress}
       />
     ));
@@ -32,18 +43,22 @@ class AddressList extends React.Component {
   }
 }
 
-export default connect(
-  ({ address: { items, loading } }) => ({
-    adresses: mapToArr(items),
-    loading,
-  }),
-  { deleteAdress, selectAdress, loadAllAddresses },
-)(AddressList);
+const mapStateToProps = state => ({
+  adresses: addressSelector(state),
+  loading: loadingSelector(state),
+  error: errorSelector(state),
+});
 
-Map.propTypes = {
+export default connect(mapStateToProps, {
+  deleteAdressRequest,
+  selectAdress,
+  loadAllAddressesRequest,
+})(AddressList);
+
+AddressList.propTypes = {
   // from connect
-  adresses: PropTypes.object,
-  deleteAdress: PropTypes.func,
+  adresses: PropTypes.array,
+  deleteAdressRequest: PropTypes.func,
   selectAdress: PropTypes.func,
   loadAllAddresses: PropTypes.func,
 };

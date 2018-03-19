@@ -5,114 +5,64 @@ import {
   DELETE_ADDRESS,
   SELECT_ADDRESS,
   LOAD_ALL_ADDRESS,
+  CURRENT_LOCATION,
+  REQUEST,
   SUCCESS,
   START,
+  FAIL,
 } from '../constants';
 
-const API_KEY = 'AIzaSyDRAMchG_UXTJVra9_cc1U0RZKPMc3vtM8';
-const URL = 'https://maps.googleapis.com/maps/api/geocode/json';
+export const loadAllAddressesRequest = () => ({
+  type: LOAD_ALL_ADDRESS + REQUEST,
+});
 
-const handleResponse = response => {
-  if (response.statusText === 'OK') {
-    console.log(response);
-    return response.data;
-  } else {
-    let error = new Error(response.statusText);
-    error.response = response;
-    throw error;
-  }
-};
+export const loadAllAddresses = () => ({
+  type: LOAD_ALL_ADDRESS + START,
+});
 
-export const fetchAddress = location => dispatch => {
-  axios
-    .get(URL, {
-      params: {
-        address: location,
-        key: API_KEY,
-      },
-    })
-    .then(response => {
-      if (!response.data.results[0]) throw new Error('Нет результата');
-      const data = response.data.results[0];
+export const loadAllAddressesSuccess = data => ({
+  type: LOAD_ALL_ADDRESS + SUCCESS,
+  payload: {
+    addresses: data.addresses,
+  },
+});
 
-      const address = {
-        id: data.place_id,
-        address: data.formatted_address,
-        location: {
-          lat: data.geometry.location.lat,
-          lng: data.geometry.location.lng,
-        },
-      };
+export const loadAllAddressesFail = error => ({
+  type: LOAD_ALL_ADDRESS + FAIL,
+  error,
+});
 
-      return axios.post('/api/address', address);
-    })
-    .then(handleResponse)
-    .then(data => {
-      dispatch({
-        type: FETCH_ADDRESS,
-        payload: data,
-      });
-    })
-    .catch(error => {
-      console.warn('fetchAddress', error);
-    });
-};
+export const selectAdress = id => ({
+  type: SELECT_ADDRESS,
+  payload: { id },
+});
 
-export const deleteAdress = id => (dispatch, getState) => {
-  const mongoId = getState().address.items[id]._id;
+export const deleteAdressRequest = id => ({
+  type: DELETE_ADDRESS + REQUEST,
+  payload: { id },
+});
 
-  axios
-    .delete(`/api/address/${mongoId}`)
-    .then(handleResponse)
-    .then(data => {
-      dispatch({
-        type: DELETE_ADDRESS,
-        payload: { id: data.address.id },
-      });
-    })
-    .catch(error => {
-      console.warn('deleteAdress', error);
-    });
-};
+export const deleteAdress = id => ({
+  type: DELETE_ADDRESS,
+  payload: { id },
+});
 
-export const selectAdress = id => dispatch => {
-  dispatch({
-    type: SELECT_ADDRESS,
-    payload: { id },
-  });
-};
+export const fetchAddressRequest = location => ({
+  type: FETCH_ADDRESS + REQUEST,
+  payload: { location },
+});
 
-export const loadAllAddresses = () => dispatch => {
-  dispatch({
-    type: LOAD_ALL_ADDRESS + START,
-  });
+export const fetchAddress = data => ({
+  type: FETCH_ADDRESS,
+  payload: data,
+});
 
-  axios
-    .get('/api/address', {
-      transformResponse: [
-        data => {
-          try {
-            data = JSON.parse(data, (key, value) => {
-              if (key === 'lat' || key === 'lng') return parseFloat(value);
-              return value;
-            });
-          } catch (e) {
-            throw new Error('Error Json convert');
-          }
-          return data;
-        },
-      ],
-    })
-    .then(handleResponse)
-    .then(data => {
-      dispatch({
-        type: LOAD_ALL_ADDRESS + SUCCESS,
-        payload: {
-          addresses: data.addresses,
-        },
-      });
-    })
-    .catch(error => {
-      console.warn('loadAllAddresses', error);
-    });
-};
+export const geoLocationStart = () => ({
+  type: CURRENT_LOCATION + START,
+});
+
+export const geoLocationFail = error => ({
+  type: CURRENT_LOCATION + FAIL,
+  error,
+});
+ 
